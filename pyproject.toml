@@ -9,4 +9,5 @@ dependencies = [
     "nuitka>=2.7.5",
     "ocrmypdf>=16.10.2",
     "pdfminer-six>=20250506",
+    "pyinstaller>=6.13.0",
 ]
