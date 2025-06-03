@@ -22,6 +22,28 @@ uv sync
 uv run OCRmyPDF/main.py # 运行项目
 ```
 
+## 项目依赖
+### Tesseract
+> Tesseract 是由 HP（惠普）实验室开发，后由 Google 维护的开源 OCR（光学字符识别）引擎。它支持多种语言和文字，能识别印刷体和部分手写体，广泛应用于文档数字化、自动化数据提取等领域。
+
+1. 下载Tesseract
+[Tesseract下载地址](https://tesseract-ocr.github.io/tessdoc/Installation.html),其中[Windows版下载地址](https://github.com/UB-Mannheim/tesseract/wiki),比如我下载了`tesseract-ocr-w64-setup-5.5.0.20241111.exe`。
+2. Tesseract安装
+双击下载好的exe程序，选择要支持识别的语言。
+![](https://lei-1258171996.cos.ap-guangzhou.myqcloud.com/imgs/2025/202506031758216.png)
+3. 把`D:\Program Files\Tesseract-OCR`添加到用户环境变量。
+
+![](https://lei-1258171996.cos.ap-guangzhou.myqcloud.com/imgs/2025/202506031756343.png)
+
+### GhostScript
+> Ghostscript 是一款开源的 PostScript (PS) 和 PDF 解释器，最初由 Aladdin Enterprises 开发，现由 Artifex Software 维护。它能解析、渲染和转换 PS/EPS/PDF/XPS 文件，支持输出到打印设备或生成栅格化图像（如 JPEG、PNG）。
+
+1. 下载GhostScript
+[GhostScript下载地址](https://ghostscript.com/releases/gsdnld.html)
+2. GhostScript安装
+3. 把`D:\Program Files\gs\gs10.05.1\bin`添加到用户环境变量。
+
+
 ## 开发说明
 ```bash
 # nuitka打包应用，推荐，体积小，但打包速度会慢一些
