@@ -66,6 +66,8 @@ python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --o
 # --output-filename：指定输出exe文件名
 # --onefile-compression=upx：使用UPX压缩exe文件，体积小，但打包速度会慢一些
 
+# 如需极致压缩，可在打包后手动执行
+upx --ultra-brute dist/OCRmyPDF.exe
 
 # 或者pyinstaller打包应用
 pyinstaller build.spec
