@@ -1,0 +1,12 @@
+[project]
+name = "myocr"
+version = "0.1.0"
+description = "高效批量OCR工具"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "customtkinter>=5.2.2",
+    "nuitka>=2.7.5",
+    "ocrmypdf>=16.10.2",
+    "pdfminer-six>=20250506",
+]
