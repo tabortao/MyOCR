@@ -50,9 +50,8 @@ uv run OCRmyPDF/main.py # 运行项目
 uv add nuitka # uv用户推荐
 # 运行nuitka时，会自动下载指定版本的mingw64
 # C:\Users\Lei\AppData\Local\Nuitka\Nuitka\Cache\DOWNLO~1\gcc\x86_64\14.2.0posix-19.1.1-12.0.0-msvcrt-r2\mingw64\bin\
-python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --windows-disable-console --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data OCRmyPDF/main.py
+python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --windows-disable-console --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --output-filename=OCRmyPDF.exe --onefile-compression=upx OCRmyPDF/main.py
 
-python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --windows-disable-console --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=F:\Code\OCR\OCRPDF\.venv\Lib\site-packages\ocrmypdf\data=ocrmypdf/data OCRmyPDF/main.py
 
 # 注意修改include-data-dir 对应的路径，为ocrmypdf/data的相对路径
 
@@ -64,6 +63,9 @@ python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --o
 # --enable-plugin=tk-inter：自动包含tkinter依赖
 # --include-data-file/--include-data-dir：如需额外资源（如icon、模型、说明文档等）可用
 # --output-dir=dist：输出到dist目录
+# --output-filename：指定输出exe文件名
+# --onefile-compression=upx：使用UPX压缩exe文件，体积小，但打包速度会慢一些
+
 
 # 或者pyinstaller打包应用
 pyinstaller build.spec

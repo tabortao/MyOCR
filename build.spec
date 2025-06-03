@@ -2,7 +2,7 @@
 block_cipher = None
 
 a = Analysis(
-    ['src/main.py'],
+    ['OCRmyPDF/main.py'],
     pathex=['.'],
     binaries=[],
     datas=[
@@ -42,10 +42,10 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='PDF_OCR_Tool',
+    name='OCRmyPDF_By_PyInstaller',
     debug=False,
     bootloader_ignore_signals=False,
-    strip=False,
+    strip=True,  # 启用strip，减小体积
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
