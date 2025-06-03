@@ -20,12 +20,17 @@
 - 主要依赖库：
   - ocrmypdf
   - 其他依赖请参考项目根目录的 `pyproject.toml` 或 `uv.lock`
+  - Tesseract、GhostScript（需自行安装并添加到环境变量）
 
 ## 快速开始
 
 1. 安装依赖：
     ```bash
-    uv pip install -r pyproject.toml
+    git clone https://gitee.com/tabortao/MyOCR
+    cd MyOCR
+    uv venv .venv # 创建虚拟环境
+    .venv\Scripts\activate # 激活虚拟环境
+    uv pip install -r pyproject.toml # 安装依赖
     ```
 2. 运行主程序：
     ```bash
