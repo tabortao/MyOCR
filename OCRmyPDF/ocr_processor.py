@@ -1,4 +1,21 @@
 import os
+# 自动检测常见Tesseract安装路径并加入PATH
+possible_paths = [
+    r'C:\Program Files\Tesseract-OCR',
+    r'D:\Program Files\Tesseract-OCR',
+    r'E:\Program Files\Tesseract-OCR',
+    r'F:\Program Files\Tesseract-OCR',
+    r'G:\Program Files\Tesseract-OCR',
+    r'C:\Program Files (x86)\Tesseract-OCR',
+    r'D:\Program Files (x86)\Tesseract-OCR',
+    r'D:\Tesseract-OCR',
+    r'G:\Tesseract-OCR',
+]
+for path in possible_paths:
+    if os.path.exists(os.path.join(path, 'tesseract.exe')):
+        os.environ['PATH'] += os.pathsep + path
+        break
+
 import ocrmypdf
 from pdfminer.high_level import extract_text
 import logging
