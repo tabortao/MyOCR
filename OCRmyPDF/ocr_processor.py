@@ -1,5 +1,5 @@
 import os
-# 自动检测常见Tesseract安装路径并加入PATH
+# 自动检测常见Tesseract安装路径并加入PATH，并设置TESSERACT_BINARY
 possible_paths = [
     r'C:\Program Files\Tesseract-OCR',
     r'D:\Program Files\Tesseract-OCR',
@@ -12,8 +12,10 @@ possible_paths = [
     r'G:\Tesseract-OCR',
 ]
 for path in possible_paths:
-    if os.path.exists(os.path.join(path, 'tesseract.exe')):
+    tesseract_path = os.path.join(path, 'tesseract.exe')
+    if os.path.exists(tesseract_path):
         os.environ['PATH'] += os.pathsep + path
+        os.environ['TESSERACT_BINARY'] = tesseract_path
         break
 
 import ocrmypdf
