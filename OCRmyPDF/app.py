@@ -104,11 +104,15 @@ class PDFOCRApp:
             self.root.after(10, lambda p=progress: self.progress_bar.set(p))
             self.log(f"正在处理: {os.path.basename(input_path)} ({i+1}/{total})")
             output_path = os.path.splitext(input_path)[0] + "_ocr.pdf"
+            # 新增：定义日志回调
+            def log_callback(msg):
+                self.root.after(0, lambda: self.log(msg))
             success, message = OCRProcessor.process_pdf(
                 input_path,
                 output_path,
                 output_txt=output_txt,
-                lang=lang
+                lang=lang,
+                log_callback=log_callback  # 传递回调
             )
             self.log(message)
             self.root.after(10, lambda p=(i+1)/total: self.progress_bar.set(p))

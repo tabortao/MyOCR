@@ -9,19 +9,31 @@ import re
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("PDF_OCR")
 
+class CallbackHandler(logging.Handler):
+    def __init__(self, callback):
+        super().__init__()
+        self.callback = callback
+
+    def emit(self, record):
+        msg = self.format(record)
+        if self.callback:
+            self.callback(msg)
+
 class OCRProcessor:
     @staticmethod
-    def process_pdf(input_path, output_path, output_txt=False, lang='chi_sim+eng', 
+    def process_pdf(input_path, output_path, output_txt=False, lang="chi_sim+eng", 
                    deskew=True, rotate_pages=True, clean=False, optimize_level=1,
-                   force_ocr=False, skip_text=False, ocr_engine="tesseract", psm=3, dpi=300):
-        """
-        处理单个PDF文件，支持中英文混合识别
-        
-        参数:
-        input_path: 输入PDF路径
-        output_path: 输出PDF路径
-        output_txt: 是否输出文本文件
-        """
+                   force_ocr=False, skip_text=False, ocr_engine="tesseract", psm=3, dpi=300,
+                   log_callback=None):
+        callback_handler = None
+        if log_callback:
+            callback_handler = CallbackHandler(log_callback)
+            callback_handler.setLevel(logging.INFO)
+            formatter = logging.Formatter('%(message)s')
+            callback_handler.setFormatter(formatter)
+            logging.getLogger().addHandler(callback_handler)
+            logging.getLogger("PDF_OCR").addHandler(callback_handler)
+            logging.getLogger("ocrmypdf").addHandler(callback_handler)
         try:
             # 自动关闭 clean 选项如果未安装 unpaper
             if clean and shutil.which("unpaper") is None:
@@ -37,8 +49,12 @@ class OCRProcessor:
                 'output_type': 'pdfa',
                 'progress_bar': False,
             }
+            if log_callback:
+                log_callback(f"开始处理: {input_path}")
             logger.info(f"开始处理: {os.path.basename(input_path)}")
             logger.info(f"OCR选项: {ocr_options}, lang: {lang}")
+            if log_callback:
+                log_callback("正在进行OCR识别...")
             ocrmypdf.ocr(input_path, output_path, lang=lang, tesseract_pagesegmode=6, **ocr_options)
             if not os.path.exists(output_path):
                 return False, f"处理失败: 未生成输出文件 {os.path.basename(output_path)}"
@@ -54,6 +70,8 @@ class OCRProcessor:
                 except Exception as e:
                     logger.warning(f"文本提取失败: {e}")
                     return True, f"PDF处理成功，但文本提取失败: {os.path.basename(input_path)}"
+            if log_callback:
+                log_callback(f"OCR完成: {output_path}")
             return True, f"处理成功: {os.path.basename(input_path)}"
         except ocrmypdf.exceptions.PriorOcrFoundError:
             return False, f"跳过处理 ({os.path.basename(input_path)}): 文件已有文本层"
@@ -64,3 +82,9 @@ class OCRProcessor:
         except Exception as e:
             logger.exception("处理过程中发生错误")
             return False, f"处理失败 ({os.path.basename(input_path)}): {str(e)}"
+        finally:
+            # 移除 handler，避免重复输出
+            if callback_handler:
+                logging.getLogger().removeHandler(callback_handler)
+                logging.getLogger("PDF_OCR").removeHandler(callback_handler)
+                logging.getLogger("ocrmypdf").removeHandler(callback_handler)
