@@ -59,9 +59,11 @@ timeout /t 3 /nobreak > nul
 "%PYTHON_PATH%" OCRmyPDF/main.py
 pause
 ```
+
 2. Bat转Exe
 使用软件`Bat To Exe Converter`把OCRmyPDF.bat转换为`OCRmyPDF.exe`
 ![](https://lei-1258171996.cos.ap-guangzhou.myqcloud.com/imgs/2025/202506041658179.jpg)
+技巧：设置好信息后，点击文件-保存会话，保存为`OCRmyPDF.session`，下次直接文件-打开`OCRmyPDF.session`即可。
 
 3. 使用Inno打包为exe安装程序
 
@@ -91,7 +93,6 @@ python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --o
 # --output-filename：指定输出exe文件名
 # --onefile-compression=upx：使用UPX压缩exe文件，体积小，但打包速度会慢一些
 
-# 使用nuitka打包后的程序大小 27.1MB，可以正常运行；使用pyinstaller打包后程序大小36.0MB，界面可以正常显示，但是点击按钮运行时会闪退，原因暂时未知。
 ```
 ### pyinstaller打包应用
 ```bash
@@ -113,7 +114,7 @@ pyinstaller -F --icon=app_icon.ico --name=OCRmyPDF --add-data ".venv/Lib/site-pa
 pyinstaller build.spec
 
 ```
-
+使用nuitka打包后的程序大小 27.1MB，可以正常运行；使用pyinstaller打包后程序大小36.0MB，界面可以正常显示，但是点击按钮运行时会闪退，原因暂时未知；使用Bat To Exe Converter +Inno打包后的应用，只有18.2MB，运行与开发一致。
 
 ## OCRmyPDF基本用法
 ### 使用示例1
