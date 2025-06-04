@@ -51,8 +51,12 @@ uv run OCRmyPDF/main.py # 运行项目
 uv add nuitka # uv用户推荐
 # 运行nuitka时，会自动下载指定版本的mingw64
 # C:\Users\Lei\AppData\Local\Nuitka\Nuitka\Cache\DOWNLO~1\gcc\x86_64\14.2.0posix-19.1.1-12.0.0-msvcrt-r2\mingw64\bin\
-python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --windows-disable-console --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --output-filename=OCRmyPDF.exe OCRmyPDF/main.py
 
+# 隐藏控制台窗口（正式发布用）：
+python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --enable-plugin=multiprocessing --windows-disable-console --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --output-filename=OCRmyPDF_By_Nuitka_v0.1.2.exe OCRmyPDF/main.py
+
+# 显示控制台窗口（推荐调试时用）：
+python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --enable-plugin=multiprocessing --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --output-filename=OCRmyPDF_By_Nuitka_v0.1.2.exe OCRmyPDF/main.py
 
 # 注意修改include-data-dir 对应的路径，为ocrmypdf/data的相对路径
 
@@ -71,8 +75,13 @@ python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --o
 ```
 ### pyinstaller打包应用
 ```bash
+# 隐藏控制台窗口（正式发布用）：
 .venv\Scripts\activate # 激活环境
 pyinstaller -F -w --icon=app_icon.ico --name=OCRmyPDF --add-data ".venv/Lib/site-packages/customtkinter;customtkinter" --add-data ".venv/Lib/site-packages/ocrmypdf/data;ocrmypdf/data" OCRmyPDF/main.py
+
+# 显示控制台窗口（推荐调试时用）：
+pyinstaller -F --icon=app_icon.ico --name=OCRmyPDF --add-data ".venv/Lib/site-packages/customtkinter;customtkinter" --add-data ".venv/Lib/site-packages/ocrmypdf/data;ocrmypdf/data" OCRmyPDF/main.py
+
 # -F：生成单文件 exe
 # -w：无控制台窗口（适合 GUI 程序）
 # --icon=app_icon.ico：指定图标

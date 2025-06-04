@@ -1,6 +1,10 @@
 
 ## OCRmyPDF
 
+### v0.1.2 (2025-06-04)
+- 修复打包后应用无法执行的问题。
+- 取消psm参数（Page Segmentation Mode，页面分割模式，Tesseract OCR 的一个参数）。
+
 ### v0.1.0 (2025-06-03)
 - 使用Python构件的开源程序[OCRmyPDF](https://github.com/ocrmypdf/OCRmyPDF) UI界面，方便使用。
 - 优化UI，使其更简洁。
