@@ -56,7 +56,7 @@ class OCRProcessor:
             if log_callback:
                 log_callback("正在进行OCR识别...")
             # 去掉 psm 参数，使用默认页面分割模式
-            ocrmypdf.ocr(input_path, output_path, lang=lang, **ocr_options)
+            ocrmypdf.api.ocr(input_path, output_path, language=lang, **ocr_options)
             if not os.path.exists(output_path):
                 return False, f"处理失败: 未生成输出文件 {os.path.basename(output_path)}"
             if output_txt:
