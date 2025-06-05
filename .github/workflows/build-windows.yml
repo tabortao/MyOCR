@@ -1,0 +1,70 @@
+name: Build and Release OCRmyPDF (Windows)
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Create and activate venv, install dependencies
+        run: |
+          uv venv .venv
+          .venv\Scripts\activate
+          uv pip install -r pyproject.toml
+          uv pip install nuitka
+
+      - name: Download Tesseract
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/UB-Mannheim/tesseract/releases/download/v5.4.0.20240606/tesseract-ocr-w64-setup-5.4.0.20240606.exe" -OutFile tesseract-installer.exe
+          Start-Process -Wait -FilePath .\tesseract-installer.exe -ArgumentList "/SILENT"
+        shell: pwsh
+
+      - name: Add Tesseract to PATH
+        run: |
+          echo "C:\Program Files\Tesseract-OCR" | Out-File -FilePath $env:GITHUB_PATH -Append
+        shell: pwsh
+
+      - name: Download Ghostscript
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10051/gs10051w64.exe" -OutFile gs-installer.exe
+          Start-Process -Wait -FilePath .\gs-installer.exe -ArgumentList "/S"
+        shell: pwsh
+
+      - name: Add Ghostscript to PATH
+        run: |
+          echo "C:\Program Files\gs\gs10.05.1\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+        shell: pwsh
+
+      - name: Build with Nuitka
+        run: |
+          .venv\Scripts\activate
+          python -m nuitka --standalone --show-memory --show-progress --show-scons --nofollow-imports --windows-disable-console --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --follow-import-to=OCRmyPDF --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --include-package=ocrmypdf,pdfminer,pikepdf  --output-filename=OCRmyPDF.exe OCRmyPDF/main.py
+        shell: pwsh
+
+      - name: Archive build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: OCRmyPDF-win
+          path: dist/**
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/OCRmyPDF.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

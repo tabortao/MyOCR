@@ -69,30 +69,10 @@ pause
 
 ### Nuitka打包应用
 ```bash
-# nuitka打包应用，推荐，体积小，但打包速度会慢一些
-uv add nuitka # uv用户推荐
-# 运行nuitka时，会自动下载指定版本的mingw64
-# C:\Users\Lei\AppData\Local\Nuitka\Nuitka\Cache\DOWNLO~1\gcc\x86_64\14.2.0posix-19.1.1-12.0.0-msvcrt-r2\mingw64\bin\
+python -m nuitka --standalone --mingw64 --show-memory --show-progress --show-scons --nofollow-imports --windows-disable-console --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --follow-import-to=OCRmyPDF --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --include-package=ocrmypdf,pdfminer,pikepdf  --output-filename=OCRmyPDF.exe OCRmyPDF/main.py
 
-# 隐藏控制台窗口（正式发布用）：
-python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --enable-plugin=multiprocessing --windows-disable-console --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --output-filename=OCRmyPDF_By_Nuitka_v0.1.2.exe OCRmyPDF/main.py
-
-# 显示控制台窗口（推荐调试时用）：
-python -m nuitka --standalone --onefile --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --enable-plugin=multiprocessing --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --output-filename=OCRmyPDF_By_Nuitka_v0.1.2.exe OCRmyPDF/main.py
-
-# 注意修改include-data-dir 对应的路径，为ocrmypdf/data的相对路径
-
-# 说明：
-# --standalone：打包所有依赖为独立目录
-# --onefile：生成单一exe（可选，首次启动慢）
-# --windows-icon-from-ico=app_icon.ico：指定exe图标
-# --windows-disable-console：打包exe时关闭控制台
-# --enable-plugin=tk-inter：自动包含tkinter依赖
-# --include-data-file/--include-data-dir：如需额外资源（如icon、模型、说明文档等）可用
-# --output-dir=dist：输出到dist目录
-# --output-filename：指定输出exe文件名
-# --onefile-compression=upx：使用UPX压缩exe文件，体积小，但打包速度会慢一些
-
+# 详细教程见《02 Python打包应用-Nuitka》
+# 注意修改include-data-dir 对应的路径，为ocrmypdf/data的相对路径；调试阶段可以去掉--windows-disable-console。
 ```
 ### pyinstaller打包应用
 ```bash
