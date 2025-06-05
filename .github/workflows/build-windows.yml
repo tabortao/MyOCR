@@ -28,28 +28,6 @@ jobs:
           uv pip install -r pyproject.toml
           uv pip install nuitka
 
-      - name: Download Tesseract
-        run: |
-          Invoke-WebRequest -Uri "https://github.com/UB-Mannheim/tesseract/releases/download/v5.4.0.20240606/tesseract-ocr-w64-setup-5.4.0.20240606.exe" -OutFile tesseract-installer.exe
-          Start-Process -Wait -FilePath .\tesseract-installer.exe -ArgumentList "/SILENT"
-        shell: pwsh
-
-      - name: Add Tesseract to PATH
-        run: |
-          echo "C:\Program Files\Tesseract-OCR" | Out-File -FilePath $env:GITHUB_PATH -Append
-        shell: pwsh
-
-      - name: Download Ghostscript
-        run: |
-          Invoke-WebRequest -Uri "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10051/gs10051w64.exe" -OutFile gs-installer.exe
-          Start-Process -Wait -FilePath .\gs-installer.exe -ArgumentList "/S"
-        shell: pwsh
-
-      - name: Add Ghostscript to PATH
-        run: |
-          echo "C:\Program Files\gs\gs10.05.1\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
-        shell: pwsh
-
       - name: Build with Nuitka
         run: |
           .venv\Scripts\activate
