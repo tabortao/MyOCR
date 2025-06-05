@@ -31,7 +31,8 @@ jobs:
       - name: Build with Nuitka
         run: |
           .venv\Scripts\activate
-          python -m nuitka --standalone --show-memory --show-progress --show-scons --nofollow-imports --windows-disable-console --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --follow-import-to=OCRmyPDF --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --include-package=ocrmypdf,pdfminer,pikepdf  --output-filename=OCRmyPDF.exe OCRmyPDF/main.py
+          $env:NUITKA_AUTO_DOWNLOAD_DEPS=1
+          python -m nuitka --standalone --mingw64 --show-memory --show-progress --show-scons --nofollow-imports --windows-disable-console --windows-icon-from-ico=app_icon.ico --output-dir=dist --enable-plugin=tk-inter --follow-import-to=OCRmyPDF --include-data-file=app_icon.ico=app_icon.ico --include-data-dir=.venv/Lib/site-packages/ocrmypdf/data=ocrmypdf/data --include-package=ocrmypdf,pdfminer,pikepdf --output-filename=OCRmyPDF.exe OCRmyPDF/main.py
         shell: pwsh
 
       - name: Archive build output
