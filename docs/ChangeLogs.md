@@ -3,6 +3,8 @@ IMG2PDFPro 是一款基于 Python、Tkinter 和 customtkinter 开发的高颜值
 
 ### v0.1.0 (2025-06-06)
 - 实现图片批量转PDF工具。
+- 实现自定义标题栏,添加最大化、关闭按钮
+- 实现拖拽图片文件
 
 
 ## OCRmyPDF

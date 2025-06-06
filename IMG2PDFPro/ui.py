@@ -5,45 +5,84 @@ from tkinter import filedialog, messagebox
 from logic import images_to_pdf
 import os
 import time
+import PIL.Image
 
 class Img2PdfApp(TkinterDnD.Tk):
     def __init__(self):
         super().__init__()
+        self.overrideredirect(True)  # 无边框窗口
         self.title("IMG2PDFPro")
-        self.iconbitmap("./IMG2PDFPro/app_icon.ico")  # 设置应用图标
+        self.iconbitmap("./IMG2PDFPro/app_icon.ico")
         self.geometry("700x600")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("dark-blue")
-        self.configure(bg="#181c22")  # 整体窗口深色
+        self.configure(bg="#181c22")
         self.selected_images = []
-
-
+        self._drag_data = {'x': 0, 'y': 0}
         # 手动加载tkdnd库，避免拖拽失效
         try:
             self.tk.call('package', 'require', 'tkdnd')
         except tk.TclError:
             messagebox.showerror("错误", "tkdnd库未正确加载，拖拽功能不可用。请检查tkinterDnD2安装。")
-
+        self.create_custom_titlebar()
         self.create_widgets()
 
+    def create_custom_titlebar(self):
+        # 自定义黑色标题栏
+        self.titlebar = ctk.CTkFrame(self, height=36, fg_color="#181c22", corner_radius=0)
+        self.titlebar.pack(fill="x", side="top")
+        # 图标（用CTkImage+PIL.Image）
+        self.icon_img = ctk.CTkImage(light_image=PIL.Image.open("./IMG2PDFPro/app_icon.png"), size=(25, 25))
+        self.icon_label = ctk.CTkLabel(self.titlebar, text="", image=self.icon_img, width=28, height=28, bg_color="#181c22")
+        self.icon_label.pack(side="left", padx=(8, 2), pady=2)
+        # 标题
+        self.title_text = ctk.CTkLabel(self.titlebar, text="IMG2PDFPro 批量图片转PDF工具", font=("微软雅黑", 16, "bold"), text_color="#00bcd4", bg_color="#181c22")
+        self.title_text.pack(side="left", padx=(6, 0), pady=0, expand=True, fill="x")
+        # 关闭按钮（符号版，最右侧）
+        self.close_btn = ctk.CTkButton(self.titlebar, text="x", width=38, height=28, fg_color="#23272e", hover_color="#e53935", text_color="#e0e0e0", font=("微软雅黑", 15, "bold"), command=self.destroy, corner_radius=6)
+        self.close_btn.pack(side="right", padx=(0, 8), pady=4)
+        # 最大化/还原按钮（关闭按钮左侧）
+        self.is_maximized = False
+        self.max_btn = ctk.CTkButton(self.titlebar, text="□", width=38, height=28, fg_color="#23272e", hover_color="#00bcd4", text_color="#e0e0e0", font=("微软雅黑", 13), command=self.toggle_maximize, corner_radius=6)
+        self.max_btn.pack(side="right", padx=(0, 2), pady=4)
+        # 拖动事件
+        self.titlebar.bind('<Button-1>', self.start_move)
+        self.titlebar.bind('<B1-Motion>', self.do_move)
+        self.title_text.bind('<Button-1>', self.start_move)
+        self.title_text.bind('<B1-Motion>', self.do_move)
+        self.icon_label.bind('<Button-1>', self.start_move)
+        self.icon_label.bind('<B1-Motion>', self.do_move)
+
+    def start_move(self, event):
+        self._drag_data['x'] = event.x
+        self._drag_data['y'] = event.y
+
+    def do_move(self, event):
+        x = self.winfo_pointerx() - self._drag_data['x']
+        y = self.winfo_pointery() - self._drag_data['y']
+        self.geometry(f'+{x}+{y}')
+
+    def toggle_maximize(self):
+        if not hasattr(self, '_normal_geometry'):
+            self._normal_geometry = self.geometry()
+        if not self.is_maximized:
+            self._normal_geometry = self.geometry()
+            self.state('zoomed')
+            self.is_maximized = True
+            self.max_btn.configure(text="❐")
+        else:
+            self.state('normal')
+            self.geometry(self._normal_geometry)
+            self.is_maximized = False
+            self.max_btn.configure(text="□")
+
     def create_widgets(self):
-        # 顶部LOGO和标题
-        top_frame = ctk.CTkFrame(self, fg_color="#181c22")
-        top_frame.pack(fill="x", pady=(10, 0))
-
-        self.title_label = ctk.CTkLabel(top_frame, text="批量图片转PDF工具", font=("微软雅黑", 22, "bold"), text_color="#00bcd4", bg_color="#181c22")
-        self.title_label.pack(side="left", expand=True, fill="x", pady=(0, 0))
-
-        # 副标题（去掉，合并到列表区内部）
-        # self.subtitle = ctk.CTkLabel(self, text="支持拖拽图片到下方区域，或点击添加文件", font=("微软雅黑", 14), text_color="#26e6fa", bg_color="#181c22")
-        # self.subtitle.pack(pady=(2, 8))
-
         # 主分区Frame（加阴影和圆角）
         self.main_frame = ctk.CTkFrame(self, corner_radius=18, fg_color="#22252a")
         self.main_frame.pack(fill="both", expand=False, padx=28, pady=4)
 
         # 文件选择说明
-        self.label = ctk.CTkLabel(self.main_frame, text="选择图片文件：", font=("微软雅黑", 14), text_color="#b0bec5", bg_color="#22252a")
+        self.label = ctk.CTkLabel(self.main_frame, text="支持拖拽图片到下方区域，或点击添加文件", font=("微软雅黑", 14), text_color="#b0bec5", bg_color="#22252a")
         self.label.pack(anchor="w", padx=18, pady=(14, 0))
 
         # 文件列表区（加边框和深色背景）
@@ -56,8 +95,8 @@ class Img2PdfApp(TkinterDnD.Tk):
         self.img_textbox.drop_target_register(DND_FILES)
         self.img_textbox.dnd_bind('<<Drop>>', self.drop_files)
         # 在Text控件上方添加内嵌提示
-        self.list_tip = ctk.CTkLabel(list_frame, text="支持拖拽图片到此区域，或点击添加文件", font=("微软雅黑", 13, "bold"), text_color="#26e6fa", bg_color="#181c22")
-        self.list_tip.place(relx=0.5, rely=0.04, anchor="n")
+        # self.list_tip = ctk.CTkLabel(list_frame, text="支持拖拽图片到此区域，或点击添加文件", font=("微软雅黑", 13, "bold"), text_color="#26e6fa", bg_color="#181c22")
+        # self.list_tip.place(relx=0.5, rely=0.04, anchor="n")
 
         # 去掉下方拖拽提示条
         # self.drag_tip = ctk.CTkLabel(self.main_frame, text="⬇️  你可以将图片文件直接拖拽到上方区域", font=("微软雅黑", 13, "bold"), text_color="#00bcd4", bg_color="#22252a")
