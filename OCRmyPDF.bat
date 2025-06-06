@@ -26,12 +26,13 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCqDJHWB/X4ULQhfWAuSAESZNLgF2Mzdoe+fpy0=
+::Zh4grVQjdCmDJHqL8EcMBzhmcCmbE0iIOpo/2uXi386h7EgFUYI=
 ::YB416Ek+ZG8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
 @echo off
+chcp 65001
 pushd %~dp0
 echo Current directory is: %cd%
 echo The program is starting, please wait...

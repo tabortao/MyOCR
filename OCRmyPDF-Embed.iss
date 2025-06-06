@@ -36,10 +36,10 @@ ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
-OutputBaseFilename={#MyAppName}-windows-x64-v{#MyAppVersion}
+OutputBaseFilename={#MyAppName}-Embed-windows-x64-v{#MyAppVersion}
 ; 输出目录
 OutputDir=F:\Code\OCR\MyOCR\Release
-SetupIconFile=F:\Code\OCR\MyOCR\Release\win-x64\app_icon.ico
+SetupIconFile=F:\Code\OCR\MyOCR\dist\MyOCR-Embed\app_icon.ico
 SolidCompression=yes
 WizardStyle=modern
 
@@ -51,8 +51,8 @@ Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.i
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "F:\Code\OCR\MyOCR\Release\win-x64\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "F:\Code\OCR\MyOCR\Release\win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "F:\Code\OCR\MyOCR\dist\MyOCR-Embed\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "F:\Code\OCR\MyOCR\dist\MyOCR-Embed\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 

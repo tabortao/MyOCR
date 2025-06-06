@@ -16,12 +16,18 @@
 # 项目目前开发环境已经使用uv创建好了，如下：
 uv init MyOCR --python 3.12 # 初始化项目
 cd MyOCR
-uv add  ocrmypdf pdfminer.six customtkinter nuitka
+uv add  ocrmypdf pdfminer.six customtkinter 
+uv add nuitka # 可选，打包应用用
 .venv\Scripts\activate # 激活环境
 uv sync
 uv run OCRmyPDF/main.py # 运行项目
 
+pip freeze > requirements.txt # 导出依赖
+pip install -r requirements.txt # 安装依赖
+uv pip install -r pyproject.toml # 安装依赖
+
 uv remove nuitka pyinstaller
+
 ```
 
 ## 项目依赖
