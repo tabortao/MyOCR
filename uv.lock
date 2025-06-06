@@ -232,6 +232,7 @@ dependencies = [
     { name = "customtkinter" },
     { name = "ocrmypdf" },
     { name = "pdfminer-six" },
+    { name = "tkinterdnd2" },
 ]
 
 [package.metadata]
@@ -239,6 +240,7 @@ requires-dist = [
     { name = "customtkinter", specifier = ">=5.2.2" },
     { name = "ocrmypdf", specifier = ">=16.10.2" },
     { name = "pdfminer-six", specifier = ">=20250506" },
+    { name = "tkinterdnd2", specifier = ">=0.4.3" },
 ]
 
 [[package]]
@@ -415,6 +417,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a1/53/830aa4c3066a8ab0ae9a9955976fb770fe9c6102117c8ec4ab3ea62d89e8/rich-14.0.0.tar.gz", hash = "sha256:82f1bc23a6a21ebca4ae0c45af9bdbc492ed20231dcb63f297d6d1021a9d5725", size = 224078, upload_time = "2025-03-30T14:15:14.23Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0d/9b/63f4c7ebc259242c89b3acafdb37b41d1185c07ff0011164674e9076b491/rich-14.0.0-py3-none-any.whl", hash = "sha256:1c9491e1951aac09caffd42f448ee3d04e58923ffe14993f6e83068dc395d7e0", size = 243229, upload_time = "2025-03-30T14:15:12.283Z" },
+]
+
+[[package]]
+name = "tkinterdnd2"
+version = "0.4.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/6e/2a/9d50ee58c7a60bf0c8d4bd8030b4afc29c8bf60158f95dbc89e8081d29d2/tkinterdnd2-0.4.3.tar.gz", hash = "sha256:03a932a11b42ab139c4552b414aa10ee8a087b8386b52baca8c62939760c2ef2", size = 444595, upload_time = "2025-02-28T12:55:50.861Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/08/c3/e04f004a53c00dc01126b6f998264cef672c6883c36aa4bd65845a8eb4c0/tkinterdnd2-0.4.3-py3-none-any.whl", hash = "sha256:8804f5d2e2a99713ec93e85384397fec6bf66fdf2065e3750938d55018971c4a", size = 493006, upload_time = "2025-02-28T12:55:47.501Z" },
 ]
 
 [[package]]
