@@ -1,18 +1,25 @@
+import sys
+import os
+import time
+import PIL.Image
 from tkinterdnd2 import TkinterDnD, DND_FILES
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from logic import images_to_pdf
-import os
-import time
-import PIL.Image
+
+def resource_path(relative_path):
+    """获取资源文件的绝对路径，兼容PyInstaller和源码运行"""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 class Img2PdfApp(TkinterDnD.Tk):
     def __init__(self):
         super().__init__()
         self.overrideredirect(True)  # 无边框窗口
         self.title("IMG2PDFPro")
-        self.iconbitmap("./IMG2PDFPro/app_icon.ico")
+        self.iconbitmap(resource_path("IMG2PDFPro/app_icon.ico"))
         self.geometry("700x600")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("dark-blue")
@@ -26,13 +33,13 @@ class Img2PdfApp(TkinterDnD.Tk):
             messagebox.showerror("错误", "tkdnd库未正确加载，拖拽功能不可用。请检查tkinterDnD2安装。")
         self.create_custom_titlebar()
         self.create_widgets()
-
+      
     def create_custom_titlebar(self):
         # 自定义黑色标题栏
         self.titlebar = ctk.CTkFrame(self, height=36, fg_color="#181c22", corner_radius=0)
         self.titlebar.pack(fill="x", side="top")
         # 图标（用CTkImage+PIL.Image）
-        self.icon_img = ctk.CTkImage(light_image=PIL.Image.open("./IMG2PDFPro/app_icon.png"), size=(25, 25))
+        self.icon_img = ctk.CTkImage(light_image=PIL.Image.open(resource_path("IMG2PDFPro/app_icon.png")), size=(25, 25))
         self.icon_label = ctk.CTkLabel(self.titlebar, text="", image=self.icon_img, width=28, height=28, bg_color="#181c22")
         self.icon_label.pack(side="left", padx=(8, 2), pady=2)
         # 标题

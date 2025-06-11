@@ -110,3 +110,11 @@ with open("name.pdf","wb") as f:
 with open("name.pdf","wb") as f:
 	f.write(img2pdf.convert('test.jpg', pdfa="/usr/share/color/icc/sRGB.icc"))
 ```
+
+## pyinstaller打包应用
+```bash
+# 隐藏控制台窗口（正式发布用）：
+.venv\Scripts\activate # 激活环境
+pyinstaller -F -w --icon=IMG2PDFPro/app_icon.ico --add-data "IMG2PDFPro/app_icon.ico;IMG2PDFPro" --add-data "IMG2PDFPro/app_icon.png;IMG2PDFPro" --name=IMG2PDFPro IMG2PDFPro/main.py
+# --add-data "源文件;目标目录" Windows下分号;，Linux/macOS下用冒号:。
+```
